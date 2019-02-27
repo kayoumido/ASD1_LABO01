@@ -20,10 +20,10 @@ unsigned count = 0;
 
 /**
  * Recherche la position d'une valeur dans un vector.
- * 
+ *
  * Pour la complexité, on considère le nombre d'itérations.
  * Tester pour diverses valeurs de val, présentes ou non dans le vector.
- * 
+ *
  * @param v vector dans lequel on cherche
  * @param val valeur à chercher
  * @return la position de la valeur dans le vector si trouvé, -1 sinon
@@ -40,9 +40,9 @@ size_t chercherPosition(const vector<int> &v, int val) {
 
 /**
  * Trie un vector.
- * 
+ *
  * Pour la complexité, on considère le nombre de comparaisons (>)
- * 
+ *
  * @param v vector à trier
  */
 void trier(vector<int> &v) {
@@ -62,11 +62,11 @@ void trier(vector<int> &v) {
 
 /**
  * Retourne true si la valeur est contenue dans le vector.
- * 
+ *
  * Pour la complexité, on considère le nombre d'itérations.
  * v doit être trié en entrée !
  * Tester pour diverses valeurs de val, présentes ou non dans le vecteur.
- * 
+ *
  * @param v vector trié dans lequel on cherche
  * @param val valeur à chercher
  * Retourne true si la valeur est contenue dans le vector, false sinon.
@@ -77,6 +77,7 @@ bool chercherSiContient(const vector<int> &v, int val) {
 
     while (first != last) {
         auto mid = first + (last - first) / 2;
+        ++count;
         if (*mid == val) {
             return true;
         } else if (*mid < val) {
@@ -90,9 +91,9 @@ bool chercherSiContient(const vector<int> &v, int val) {
 
 /**
  * Pour la complexité, on considère le nombre d'additions
- * 
+ *
  * @param n
- * @return 
+ * @return
  */
 unsigned long long f(unsigned n) {
 
@@ -103,7 +104,7 @@ unsigned long long f(unsigned n) {
 
 /**
  * Pour la complexité, on considère le nombre d'additions (+=)
- * 
+ *
  * @param v
  */
 void g(vector<int> &v) {
@@ -116,9 +117,9 @@ void g(vector<int> &v) {
 
 /**
  * Pour la complexité, on considère les opérations push_back()
- * 
+ *
  * Evaluer le temps d'exécution
- * 
+ *
  * @param N nombre de données à générer
  * @param maxVal valeur maximale des données
  * @return vector rempli de N valeurs aléatoires.
@@ -135,9 +136,9 @@ vector<int> random(size_t N, int maxVal) {
 
 /**
  * Pour la complexité, on considère les opérations insert()
- * 
+ *
  * Evaluer le temps d'exécution
- * 
+ *
  * @param N nombre de données à générer
  * @param maxVal valeur maximale des données
  * @return vector rempli de N valeurs aléatoires.
@@ -154,7 +155,7 @@ vector<int> random2(size_t N, int maxVal) {
 
 void test(const int FUNCTION_TO_TEST){
 
-    vector<int> vector_sizes;;
+    vector<int> vector_sizes;
     unsigned replication;// Search replication in each vector
 
     switch(FUNCTION_TO_TEST){
@@ -232,6 +233,32 @@ void test(const int FUNCTION_TO_TEST){
 
 
             break;
+        case 3:
+            vector_sizes = {1000, 5000, 10000, 50000, 100000, 500000};
+            replication = 1000000;
+
+            // Loop through all vector sizes and search (REPLICATION times) a random number
+            for (auto i = vector_sizes.begin(); i < vector_sizes.end(); ++i) {
+                // Create a new vector contains : 1 ... currentSize)
+                vector<int> vector(*i);
+                for (unsigned j = 1; j <= *i; ++j) {
+                    vector.at(j - 1) = j;
+                }
+
+            unsigned average = 0;
+
+            for (unsigned k = 0; k < replication; ++k) {
+              count = 0;
+              int randomNb = rand();
+              chercherSiContient(vector, randomNb);
+              average += count;
+            }
+
+            average = average / replication;
+
+            cout << "Pour un vecteur contenant " << *i << " elements" << ", la moyenne des iteration est : " << average << endl;
+          }
+            break;
     }
 }
 
@@ -239,5 +266,5 @@ int main() {
     //initialisation du générateur aléatoire
     srand(time(NULL));
 
-    test(1);
+    test(3);
 }
