@@ -156,7 +156,7 @@ vector<int> random2(size_t N, int maxVal) {
 
 void test(const int FUNCTION_TO_TEST){
 
-    vector<int> vector_sizes;
+    vector<unsigned> vector_sizes;
     unsigned replication;// Search replication in each vector
 
     switch(FUNCTION_TO_TEST){
@@ -190,47 +190,23 @@ void test(const int FUNCTION_TO_TEST){
             }
 
             break;
+
         case 2:
-
-            vector_sizes = {10, 20, 100};
-            replication = 1;
-
-            // Loop through all vector sizes and search (REPLICATION times) a random number
-            for (auto i = vector_sizes.begin(); i < vector_sizes.end(); ++i) {
-                unsigned average = 0;
-                // Create and sort "replication" times a vector
-                for (unsigned k = 0; k < replication; ++k) {
-                    // Create a new vector contains random number between 1 - size)
-                    vector<int> vector(*i);
-                    for (unsigned j = 1; j <= *i; ++j) {
-                        vector.at(j - 1) = rand() % *i;;
-                    }
-
-                    cout << endl <<  "[";
-                    for(int a: vector) {
-                        cout << a << ", ";
-                    }
-                    cout << "]" << endl;
-
-                    count = 0;
-                    trier(vector);
-                    average += count;
-
-                    cout << endl <<  "[";
-                    for(int a: vector) {
-                        cout << a << ", ";
-                    }
-                    cout << "]" << endl;
-
+            vector_sizes = {5, 25, 125, 625, 3125, 15625};
+            for(auto i = vector_sizes.begin(); i < vector_sizes.end(); ++i) {
+                // Create vector contains random number to sort
+                unsigned currentVectorSize = *i;
+                vector<int> vectorToSort(currentVectorSize);
+                for(unsigned currentPos = 0; currentPos < currentVectorSize; ++currentPos) {
+                    vectorToSort.at(currentPos) = rand();
                 }
 
+                // Count each comparison in the target function
+                count = 0;
+                trier(vectorToSort);
 
-                average = average / replication;
-
-                cout << "Pour un vecteur contenant " << *i << " éléments" << ", la moyenne des comparaison est : " << average << endl;
-
+                cout << "Pour un vecteur contenant " << currentVectorSize << " éléments" << ", la moyenne des comparaison est : " << count << endl;
             }
-
 
             break;
         case 3:
