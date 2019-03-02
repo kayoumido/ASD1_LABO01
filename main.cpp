@@ -16,6 +16,7 @@
 
 using namespace std;
 
+enum class Functions {CHERCHER_POSITION, TRIER, CHERCHER_SI_CONTIENT, F, G, RANDOM, RANDOM_2};
 unsigned count = 0;
 
 /**
@@ -154,7 +155,7 @@ vector<int> random2(size_t N, int maxVal) {
     return v;
 }
 
-void test(const int FUNCTION_TO_TEST){
+void test(const Functions& FUNCTION_TO_TEST){
 
     vector<unsigned> vector_sizes;
     unsigned replication;// Search replication in each vector
@@ -162,9 +163,9 @@ void test(const int FUNCTION_TO_TEST){
     switch(FUNCTION_TO_TEST){
 
         // First function : "Chercher Position"
-        case 1:
+        case Functions::CHERCHER_POSITION:
 
-            vector_sizes = {500, 1000, 5000, 10000};
+            vector_sizes = {500, 2500, 4500, 6500, 8500, 10500};
             replication = 100000;
 
             // Loop through all vector sizes and search (REPLICATION times) a random number
@@ -191,7 +192,7 @@ void test(const int FUNCTION_TO_TEST){
 
             break;
 
-        case 2:
+        case Functions::TRIER:
             vector_sizes = {5, 25, 125, 625, 3125, 15625};
             for(auto i = vector_sizes.begin(); i < vector_sizes.end(); ++i) {
                 // Create vector contains random number to sort
@@ -209,7 +210,7 @@ void test(const int FUNCTION_TO_TEST){
             }
 
             break;
-        case 3:
+        case Functions::CHERCHER_SI_CONTIENT:
             vector_sizes = {1000, 5000, 10000, 50000, 100000, 1000000};
             replication = 100000;
 
@@ -235,7 +236,14 @@ void test(const int FUNCTION_TO_TEST){
             cout << "Pour un vecteur contenant " << *i << " elements" << ", la moyenne des iteration est : " << average << endl;
           }
             break;
-        case 5:
+
+        case Functions::F:
+
+            // TODO
+
+            break;
+
+        case Functions::G:
             vector_sizes = {16, 64, 128, 512, 1000, 5000 };
             replication = 1000;
 
@@ -263,6 +271,18 @@ void test(const int FUNCTION_TO_TEST){
             }
 
             break;
+
+        case Functions::RANDOM:
+
+            // TODO
+
+            break;
+
+        case Functions::RANDOM_2:
+            
+            // TODO
+
+            break;
     }
 }
 
@@ -270,5 +290,5 @@ int main() {
     //initialisation du générateur aléatoire
     srand(time(NULL));
 
-    test(5);
+    test(Functions::CHERCHER_POSITION);
 }
