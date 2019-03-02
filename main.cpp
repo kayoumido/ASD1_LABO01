@@ -110,6 +110,7 @@ unsigned long long f(unsigned n) {
 void g(vector<int> &v) {
     for (size_t i = 0; i < v.size(); ++i) {
         for (size_t j = v.size() - 1; j > 0; j /= 2) {
+            ++count;
             v.at(i) += v.at(j);
         }
     }
@@ -189,7 +190,6 @@ void test(const int FUNCTION_TO_TEST){
             }
 
             break;
-
         case 2:
 
             vector_sizes = {10, 20, 100};
@@ -234,8 +234,8 @@ void test(const int FUNCTION_TO_TEST){
 
             break;
         case 3:
-            vector_sizes = {1000, 5000, 10000, 50000, 100000, 500000};
-            replication = 1000000;
+            vector_sizes = {1000, 5000, 10000, 50000, 100000, 1000000};
+            replication = 100000;
 
             // Loop through all vector sizes and search (REPLICATION times) a random number
             for (auto i = vector_sizes.begin(); i < vector_sizes.end(); ++i) {
@@ -259,6 +259,34 @@ void test(const int FUNCTION_TO_TEST){
             cout << "Pour un vecteur contenant " << *i << " elements" << ", la moyenne des iteration est : " << average << endl;
           }
             break;
+        case 5:
+            vector_sizes = {16, 64, 128, 512, 1000, 5000 };
+            replication = 1000;
+
+            // Loop through all vector sizes and search (REPLICATION times) a random number
+            for (auto i = vector_sizes.begin(); i < vector_sizes.end(); ++i) {
+              unsigned average = 0;
+              vector<int> v(*i, 1);
+
+              for ( unsigned k = 0; k < replication; ++k) {
+                count = 0;
+                // for ( auto a : v) {
+                //   cout << a << ", ";
+                // }
+                g(v);
+                average += count;
+                // for ( auto a : v) {
+                //   cout << a << ", ";
+                // }
+              }
+
+              average = average / replication;
+              
+              cout << "Pour un vecteur contenant " << *i << " éléments"
+                   << ", la moyenne des additions est : " << average << endl;
+            }
+
+            break;
     }
 }
 
@@ -266,5 +294,5 @@ int main() {
     //initialisation du générateur aléatoire
     srand(time(NULL));
 
-    test(3);
+    test(5);
 }
