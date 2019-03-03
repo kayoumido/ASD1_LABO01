@@ -13,11 +13,14 @@
 #include <random>
 #include <ctime>
 #include <iostream>
+#include <chrono>
 
 using namespace std;
+using namespace std::chrono;
 
 enum class Functions {CHERCHER_POSITION, TRIER, CHERCHER_SI_CONTIENT, F, G, RANDOM, RANDOM_2};
 unsigned count = 0;
+double totalDuration = 0.;
 
 /**
  * Recherche la position d'une valeur dans un vector.
@@ -154,9 +157,14 @@ vector<int> random(size_t N, int maxVal) {
 vector<int> random2(size_t N, int maxVal) {
 
     vector<int> v;
+
+    high_resolution_clock::time_point t1 = high_resolution_clock::now();
     for (size_t i = 0; i < N; ++i) {
         v.insert(v.begin(), 1 + rand() % maxVal);
     }
+    high_resolution_clock::time_point t2 = high_resolution_clock::now();
+    totalDuration = duration_cast<nanoseconds>( t2 - t1 ).count();
+
 
     return v;
 }
@@ -228,19 +236,19 @@ void test(const Functions& FUNCTION_TO_TEST){
                     vector.at(j - 1) = j;
                 }
 
-            unsigned average = 0;
+                unsigned average = 0;
 
-            for (unsigned k = 0; k < replication; ++k) {
-              count = 0;
-              int randomNb = rand();
-              chercherSiContient(vector, randomNb);
-              average += count;
+                for (unsigned k = 0; k < replication; ++k) {
+                  count = 0;
+                  int randomNb = rand();
+                  chercherSiContient(vector, randomNb);
+                  average += count;
+                }
+
+                average = average / replication;
+
+                cout << "Pour un vecteur contenant " << *i << " elements" << ", la moyenne des iteration est : " << average << endl;
             }
-
-            average = average / replication;
-
-            cout << "Pour un vecteur contenant " << *i << " elements" << ", la moyenne des iteration est : " << average << endl;
-          }
             break;
 
         case Functions::F:
@@ -293,8 +301,12 @@ void test(const Functions& FUNCTION_TO_TEST){
             break;
 
         case Functions::RANDOM_2:
+            const size_t SIZE = 30;
+            const int MAX = 3;
+
+            vector<int> vector = random2(SIZE, MAX);
             
-            // TODO
+            cout << "Pour remplir un vecteur de " << SIZE << " elements allant de 1 à " << MAX << ", le temps d'éxécution est de " << totalDuration << " nanosecondes" << endl;
 
             break;
     }
@@ -304,5 +316,5 @@ int main() {
     //initialisation du générateur aléatoire
     srand(time(NULL));
 
-    test(Functions::F);
+    test(Functions::RANDOM_2);
 }
