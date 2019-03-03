@@ -18,7 +18,9 @@
 using namespace std;
 using namespace std::chrono;
 
-enum class Functions {CHERCHER_POSITION, TRIER, CHERCHER_SI_CONTIENT, F, G, RANDOM, RANDOM_2};
+enum class Functions {
+    CHERCHER_POSITION, TRIER, CHERCHER_SI_CONTIENT, F, G, RANDOM, RANDOM_2,
+};
 unsigned count = 0;
 double totalDuration = 0.;
 
@@ -138,9 +140,14 @@ void g(vector<int> &v) {
 vector<int> random(size_t N, int maxVal) {
 
     vector<int> v;
+    high_resolution_clock::time_point t1 = high_resolution_clock::now();
     for (size_t i = 0; i < N; ++i) {
+        // push_back has a complexity of O(1)
         v.push_back(1 + rand() % maxVal);
     }
+    high_resolution_clock::time_point t2 = high_resolution_clock::now();
+
+    totalDuration = duration_cast<nanoseconds>(t2 - t1).count();
 
     return v;
 }
@@ -163,18 +170,18 @@ vector<int> random2(size_t N, int maxVal) {
         v.insert(v.begin(), 1 + rand() % maxVal);
     }
     high_resolution_clock::time_point t2 = high_resolution_clock::now();
-    totalDuration = duration_cast<nanoseconds>( t2 - t1 ).count();
+    totalDuration = duration_cast<nanoseconds>(t2 - t1).count();
 
 
     return v;
 }
 
-void test(const Functions& FUNCTION_TO_TEST){
+void test(const Functions &FUNCTION_TO_TEST) {
 
     vector<unsigned> vector_sizes;
     unsigned replication;// Search replication in each vector
 
-    switch(FUNCTION_TO_TEST){
+    switch (FUNCTION_TO_TEST) {
 
         // First function : "Chercher Position"
         case Functions::CHERCHER_POSITION:
@@ -201,18 +208,19 @@ void test(const Functions& FUNCTION_TO_TEST){
 
                 average = average / replication;
 
-                cout << "Pour un vecteur contenant " << *i << " éléments" << ", la moyenne des itération est : " << average << endl;
+                cout << "Pour un vecteur contenant " << *i << " éléments" << ", la moyenne des itération est : "
+                     << average << endl;
             }
 
             break;
 
         case Functions::TRIER:
             vector_sizes = {5, 25, 125, 625, 3125, 15625};
-            for(auto i = vector_sizes.begin(); i < vector_sizes.end(); ++i) {
+            for (auto i = vector_sizes.begin(); i < vector_sizes.end(); ++i) {
                 // Create vector contains random number to sort
                 unsigned currentVectorSize = *i;
                 vector<int> vectorToSort(currentVectorSize);
-                for(unsigned currentPos = 0; currentPos < currentVectorSize; ++currentPos) {
+                for (unsigned currentPos = 0; currentPos < currentVectorSize; ++currentPos) {
                     vectorToSort.at(currentPos) = rand();
                 }
 
@@ -220,7 +228,8 @@ void test(const Functions& FUNCTION_TO_TEST){
                 count = 0;
                 trier(vectorToSort);
 
-                cout << "Pour un vecteur contenant " << currentVectorSize << " éléments" << ", la moyenne des comparaison est : " << count << endl;
+                cout << "Pour un vecteur contenant " << currentVectorSize << " éléments"
+                     << ", la moyenne des comparaison est : " << count << endl;
             }
 
             break;
@@ -239,15 +248,16 @@ void test(const Functions& FUNCTION_TO_TEST){
                 unsigned average = 0;
 
                 for (unsigned k = 0; k < replication; ++k) {
-                  count = 0;
-                  int randomNb = rand();
-                  chercherSiContient(vector, randomNb);
-                  average += count;
+                    count = 0;
+                    int randomNb = rand();
+                    chercherSiContient(vector, randomNb);
+                    average += count;
                 }
 
                 average = average / replication;
 
-                cout << "Pour un vecteur contenant " << *i << " elements" << ", la moyenne des iteration est : " << average << endl;
+                cout << "Pour un vecteur contenant " << *i << " elements" << ", la moyenne des iteration est : "
+                     << average << endl;
             }
             break;
 
@@ -255,7 +265,7 @@ void test(const Functions& FUNCTION_TO_TEST){
 
             vector_sizes = {5, 6, 7, 8, 9, 10};
 
-            for (auto i = vector_sizes.begin(); i < vector_sizes.end() ; ++i) {
+            for (auto i = vector_sizes.begin(); i < vector_sizes.end(); ++i) {
                 count = 0;
                 f(*i);
                 cout << "Pour un N de " << *i << ", le nombre d'addiction est : " << count << endl;
@@ -263,52 +273,59 @@ void test(const Functions& FUNCTION_TO_TEST){
 
             break;
 
-            break;
-
         case Functions::G:
-            vector_sizes = {16, 64, 128, 512, 1000, 5000 };
+            vector_sizes = {16, 64, 128, 512, 1000, 5000};
             replication = 1000;
 
             // Loop through all vector sizes and search (REPLICATION times) a random number
             for (auto i = vector_sizes.begin(); i < vector_sizes.end(); ++i) {
-              unsigned average = 0;
-              vector<int> v(*i, 1);
+                unsigned average = 0;
+                vector<int> v(*i, 1);
 
-              for ( unsigned k = 0; k < replication; ++k) {
-                count = 0;
-                // for ( auto a : v) {
-                //   cout << a << ", ";
-                // }
-                g(v);
-                average += count;
-                // for ( auto a : v) {
-                //   cout << a << ", ";
-                // }
-              }
+                for (unsigned k = 0; k < replication; ++k) {
+                    count = 0;
+                    // for ( auto a : v) {
+                    //   cout << a << ", ";
+                    // }
+                    g(v);
+                    average += count;
+                    // for ( auto a : v) {
+                    //   cout << a << ", ";
+                    // }
+                }
 
-              average = average / replication;
-              
-              cout << "Pour un vecteur contenant " << *i << " éléments"
-                   << ", la moyenne des additions est : " << average << endl;
+                average = average / replication;
+
+                cout << "Pour un vecteur contenant " << *i << " éléments"
+                     << ", la moyenne des additions est : " << average << endl;
             }
 
             break;
 
         case Functions::RANDOM:
 
-            // TODO
+            vector_sizes = {1000, 5000, 10000, 50000, 100000, 1000000};
+            const int MAX = 100;
+
+            for (auto i = vector_sizes.begin(); i < vector_sizes.end(); ++i) {
+                random(*i, MAX);
+
+                cout << "Pour remplir un vecteur de " << *i << " elements allant de 1 à " << MAX
+                     << ", le temps d'éxécution est de " << totalDuration << " nanosecondes" << endl;
+            }
 
             break;
 
         case Functions::RANDOM_2:
             const size_t SIZE = 30;
-            const int MAX = 3;
+            const int MAX_2 = 3;
 
-            vector<int> vector = random2(SIZE, MAX);
-            
-            cout << "Pour remplir un vecteur de " << SIZE << " elements allant de 1 à " << MAX << ", le temps d'éxécution est de " << totalDuration << " nanosecondes" << endl;
+            vector<int> vector = random2(SIZE, MAX_2);
 
+            cout << "Pour remplir un vecteur de " << SIZE << " elements allant de 1 à " << MAX_2
+                 << ", le temps d'éxécution est de " << totalDuration << " nanosecondes" << endl;
             break;
+
     }
 }
 
