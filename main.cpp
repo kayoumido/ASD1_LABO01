@@ -100,6 +100,12 @@ unsigned long long f(unsigned n) {
 
     if (n == 0) return 1;
 
+
+    // the counter is increased by two because it's asked to take into
+    // account the number of addition made for the complexity and their are 2 of them each
+    // time the function is called
+    count += 2;
+
     return f(n - 1) + f(n - 1) + f(n - 1);
 }
 
@@ -239,7 +245,15 @@ void test(const Functions& FUNCTION_TO_TEST){
 
         case Functions::F:
 
-            // TODO
+            vector_sizes = {5, 6, 7, 8, 9, 10};
+
+            for (auto i = vector_sizes.begin(); i < vector_sizes.end() ; ++i) {
+                count = 0;
+                f(*i);
+                cout << "Pour un N de " << *i << ", le nombre d'addiction est : " << count << endl;
+            }
+
+            break;
 
             break;
 
@@ -290,5 +304,5 @@ int main() {
     //initialisation du générateur aléatoire
     srand(time(NULL));
 
-    test(Functions::CHERCHER_POSITION);
+    test(Functions::F);
 }
