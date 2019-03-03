@@ -180,6 +180,8 @@ void test(const Functions &FUNCTION_TO_TEST) {
 
     vector<unsigned> vector_sizes;
     unsigned replication;// Search replication in each vector
+    const int MAX = 100;
+    const double DIVISOR_NANO_TO_MILLIS = 1e+6;
 
     switch (FUNCTION_TO_TEST) {
 
@@ -305,7 +307,6 @@ void test(const Functions &FUNCTION_TO_TEST) {
         case Functions::RANDOM:
 
             vector_sizes = {1000, 5000, 10000, 50000, 100000, 1000000};
-            const int MAX = 100;
 
             for (auto i = vector_sizes.begin(); i < vector_sizes.end(); ++i) {
                 random(*i, MAX);
@@ -317,13 +318,16 @@ void test(const Functions &FUNCTION_TO_TEST) {
             break;
 
         case Functions::RANDOM_2:
-            const size_t SIZE = 30;
-            const int MAX_2 = 3;
 
-            vector<int> vector = random2(SIZE, MAX_2);
+            vector_sizes = {1000, 5000, 10000, 20000, 40000, 100000};
 
-            cout << "Pour remplir un vecteur de " << SIZE << " elements allant de 1 à " << MAX_2
-                 << ", le temps d'éxécution est de " << totalDuration << " nanosecondes" << endl;
+            for (auto i = vector_sizes.begin(); i < vector_sizes.end(); ++i) {
+                vector<int> vector = random2(*i, MAX);
+
+                cout << "Pour remplir un vecteur de " << *i << " elements allant de 1 à " << MAX
+                     << ", le temps d'éxécution est de " << totalDuration / DIVISOR_NANO_TO_MILLIS << " milliseconde" << endl;
+            }
+
             break;
 
     }
