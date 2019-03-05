@@ -185,13 +185,12 @@ void test(const Functions &FUNCTION_TO_TEST) {
 
     switch (FUNCTION_TO_TEST) {
 
-        // First function : "Chercher Position"
         case Functions::CHERCHER_POSITION:
 
             vector_sizes = {500, 2500, 4500, 6500, 8500, 10500};
             replication = 100000;
 
-            // Loop through all vector sizes and search (REPLICATION times) a random number
+
             for (auto i = vector_sizes.begin(); i < vector_sizes.end(); ++i) {
                 // Create a new vector contains : 1 ... currentSize)
                 vector<int> vector(*i);
@@ -200,7 +199,7 @@ void test(const Functions &FUNCTION_TO_TEST) {
                 }
 
                 unsigned average = 0;
-                // Search 1'000'000x a random number between -currentSize ... currentSize
+                // Search in the vector a random number (included in the vector) <replication> times
                 for (unsigned k = 0; k < replication; ++k) {
                     count = 0;
                     int randomNb = rand() % *i;
@@ -208,6 +207,7 @@ void test(const Functions &FUNCTION_TO_TEST) {
                     average += count;
                 }
 
+                // Calculate the average of iterations to find the searched element
                 average = average / replication;
 
                 cout << "Pour un vecteur contenant " << *i << " éléments" << ", la moyenne des itération est : "
@@ -239,7 +239,7 @@ void test(const Functions &FUNCTION_TO_TEST) {
             vector_sizes = {1000, 5000, 10000, 50000, 100000, 1000000};
             replication = 100000;
 
-            // Loop through all vector sizes and search (REPLICATION times) a random number
+
             for (auto i = vector_sizes.begin(); i < vector_sizes.end(); ++i) {
                 // Create a new vector contains : 1 ... currentSize)
                 vector<int> vector(*i);
@@ -249,6 +249,7 @@ void test(const Functions &FUNCTION_TO_TEST) {
 
                 unsigned average = 0;
 
+                // Search in the vector a random number (included in the vector) <replication> times
                 for (unsigned k = 0; k < replication; ++k) {
                     count = 0;
                     int randomNb = rand();
@@ -256,6 +257,7 @@ void test(const Functions &FUNCTION_TO_TEST) {
                     average += count;
                 }
 
+                // Calculate the average of iterations to find the searched element
                 average = average / replication;
 
                 cout << "Pour un vecteur contenant " << *i << " elements" << ", la moyenne des iteration est : "
@@ -276,31 +278,20 @@ void test(const Functions &FUNCTION_TO_TEST) {
             break;
 
         case Functions::G:
+
             vector_sizes = {16, 64, 128, 512, 1000, 5000};
-            replication = 1000;
 
-            // Loop through all vector sizes and search (REPLICATION times) a random number
             for (auto i = vector_sizes.begin(); i < vector_sizes.end(); ++i) {
-                unsigned average = 0;
+                // Create a vector of size *i contains only 1 (this algorithm doesn't neet specific data)
                 vector<int> v(*i, 1);
-
-                for (unsigned k = 0; k < replication; ++k) {
-                    count = 0;
-                    // for ( auto a : v) {
-                    //   cout << a << ", ";
-                    // }
-                    g(v);
-                    average += count;
-                    // for ( auto a : v) {
-                    //   cout << a << ", ";
-                    // }
-                }
-
-                average = average / replication;
+                // Count nb of +=
+                count = 0;
+                g(v);
 
                 cout << "Pour un vecteur contenant " << *i << " éléments"
-                     << ", la moyenne des additions est : " << average << endl;
+                     << ", la moyenne des additions (+=) est : " << count << endl;
             }
+
 
             break;
 
@@ -337,5 +328,5 @@ int main() {
     //initialisation du générateur aléatoire
     srand(time(NULL));
 
-    test(Functions::RANDOM_2);
+    test(Functions::G);
 }
