@@ -1,11 +1,11 @@
-//
+﻿//
 //  Labo1.cpp
 //  Labos ASD1 2018
 //
 //  Created by Olivier Cuisenaire on 16.12.16.
 //  Copyright © 2016 Olivier Cuisenaire. All rights reserved.
 //
-//	/* NOMS DES ETUDIANTS ICI */
+//  Dessaules Loïc, Kayoumi Doran, Thurnherr Gabrielle
 //
 
 #include <stdlib.h>
